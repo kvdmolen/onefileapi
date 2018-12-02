@@ -1,1 +1,11 @@
-{"products":{"1":{"a":1,"b":"saqwqwqwsd","id":"5c030fef1cd75"}}}
+{
+	"products": [
+		{
+			"id":"5c030fef1cd75",
+			"name":"Product 1"
+		},{
+			"id":"5c043c2131fc5",
+			"name":"Product 2"
+		}
+	]
+}

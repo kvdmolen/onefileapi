@@ -10,23 +10,40 @@ No database required, all data is stored in one single JSON file.
 $router->get("/:resource", function($response, $body, $args){
 	$response->success($response->all($args["resource"]), $args["resource"]);
 });
-
-$router->get("/:resource/:id", function($response, $body, $args){
-	$response->success($response->one($args["resource"]), $args["id"], $args["resource"]);
-});
 ```
 
-Calling `GET '/index.php/products'` or `GET '/index.php/products/5c030fef1cd75'`
-
-Results in
+Then `GET '/index.php/products'` results in
 
 ```javascript
 {
 	success: true,
 	data: [
 		{
-			id: "5c030fef1cd75",
-			name: "Product 1"
+			"id":"5c030fef1cd75",
+			"name":"Product 1"
+		},{
+			"id":"5c043c2131fc5",
+			"name":"Product 2"
+		}
+	]
+}
+```
+
+```php
+$router->get("/:resource/:id", function($response, $body, $args){
+	$response->success($response->one($args["resource"]), $args["id"], $args["resource"]);
+});
+```
+
+Then `GET '/index.php/products/5c030fef1cd75'` results in
+
+```javascript
+{
+	success: true,
+	data: [
+		{
+			"id":"5c030fef1cd75",
+			"name":"Product 1"
 		}
 	]
 }
