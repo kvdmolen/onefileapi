@@ -1,7 +1,8 @@
 # Onefileapi
 
-A simple CRUD REST API based on file document store. No dependencies.
+A simple CRUD REST API based on file document store for PHP. No dependencies.
 
+No database required, all data is stored in one single JSON file.
 
 ## Usage
 
@@ -15,7 +16,7 @@ $router->get("/:resource/:id", function($response, $body, $args){
 });
 ```
 
-Calling `GET '/products'` or `GET '/products/5c030fef1cd75'`
+Calling `GET '/index.php/products'` or `GET '/index.php/products/5c030fef1cd75'`
 
 Results in
 
@@ -31,5 +32,12 @@ Results in
 }
 ```
 
+See `index.php` for POST, PUT and DELETE examples.
 
+## Permissions
 
+Make sure to set correct permissions on both `index.php` and `store.json`.
+
+## Disclaimer
+
+Not intended for large datasets, nor for production webapps. Intended to quickly pull up a fully functional REST API.
