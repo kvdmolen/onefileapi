@@ -7,8 +7,8 @@ No database required, all data is stored in one single JSON file.
 ## Usage
 
 ```php
-$router->get("/:resource", function($response, $body, $args){
-	$response->success($response->all($args["resource"]), $args["resource"]);
+$router->get("/products", function($response, $body, $args){
+	$response->success($response->all("products"), "myProducts");
 });
 ```
 
@@ -17,21 +17,23 @@ Then `GET '/index.php/products'` results in
 ```javascript
 {
 	success: true,
-	data: [
-		{
-			"id":"5c030fef1cd75",
-			"name":"Product 1"
-		},{
-			"id":"5c043c2131fc5",
-			"name":"Product 2"
-		}
-	]
+	data: {
+		myProducts: [
+			{
+				"id":"5c030fef1cd75",
+				"name":"Product 1"
+			},{
+				"id":"5c043c2131fc5",
+				"name":"Product 2"
+			}
+		]
+	}
 }
 ```
 
 ```php
-$router->get("/:resource/:id", function($response, $body, $args){
-	$response->success($response->one($args["resource"]), $args["id"], $args["resource"]);
+$router->get("/products/:id", function($response, $body, $args){
+	$response->success($response->one("products"), $args["id"], "myProduct");
 });
 ```
 
@@ -40,12 +42,21 @@ Then `GET '/index.php/products/5c030fef1cd75'` results in
 ```javascript
 {
 	success: true,
-	data: [
-		{
+	data: {
+		myProduct: {
 			"id":"5c030fef1cd75",
 			"name":"Product 1"
 		}
-	]
+	}
+}
+```
+
+Also, `GET '/index.php/products/invalidid'` results in `HTTP Response code 400`
+
+```javascript
+{
+	success: false,
+	message: "Item not found"
 }
 ```
 
