@@ -10,23 +10,28 @@ $router = new Router;
 
 
 $router->get("/:resource", function($response, $body, $args){
-	$response->success($response->all($args["resource"]), $args["resource"]);
+	$data = $response->all($args["resource"]);
+	$response->success($data, $args["resource"]);
 });
 
 $router->get("/:resource/:id", function($response, $body, $args){
-	$response->success($response->one($args["resource"], $args["id"]), $args["resource"]);
+	$data = $response->one($args["resource"], $args["id"]);
+	$response->success($data, $args["resource"]);
 });
 
 $router->post("/:resource", function($response, $body, $args){
-	$response->success($response->add($args["resource"], $body), $args["resource"]);
+	$data = $response->add($args["resource"], $body)
+	$response->success($data, $args["resource"]);
 });
 
 $router->put("/:resource/:id", function($response, $body, $args){
-	$response->success($response->update($args["resource"], $args["id"], $body), $args["resource"]);
+	$data = $response->update($args["resource"], $args["id"], $body)
+	$response->success($data, $args["resource"]);
 });
 
 $router->delete("/:resource/:id", function($response, $body, $args){
-	$response->success($response->remove($args["resource"], $args["id"]), $args["resource"]);
+	$success = $response->remove($args["resource"], $args["id"]);
+	$response->success(null);
 });
 
 
@@ -55,9 +60,9 @@ class Store {
 			        break;
 			    }
 			}
-			return false;
+			$this->error("Item not found");
 		}else{
-			return false;
+			$this->error("Item not found");
 		}
 	}
 
@@ -77,19 +82,20 @@ class Store {
 		if(isset($this->store->{$resource})){
 			foreach($this->store->{$resource} as $index => $item) {
 			    if ($id == $item->{"id"}) {
-			        foreach($item as $key => $value){
-			        	if($key != "id" && isset($newitem[$key])){
-			        		$this->store->{$resource}[$index]->{$key} = $newitem[$key];
-			        	}
-			    	}
-					$this->savestore();
-					return $item;
+			        //foreach($item as $key => $value){
+			        //	if($key != "id" && isset($newitem[$key])){
+			        //		$this->store->{$resource}[$index]->{$key} = $newitem[$key];
+			        // 	}
+			    	//}
+				$this->store->{$resource}[$index] = $newitem;
+				$this->savestore();
+				return $item;
 			        break;
 			    }
 			}
-			return false;
+			$this->error("Item not found");
 		}else{
-			return false;
+			$this->error("Item not found");
 		}
 	}
 
@@ -104,9 +110,9 @@ class Store {
 			        break;
 			    }
 			}
-			return false;
+			$this->error("Item not found");
 		}else{
-			return false;
+			$this->error("Item not found");
 		}
 	}
 
@@ -208,17 +214,17 @@ Class Router extends Store {
 		$response = array(
 			"success" => true,
 			"data" => $data);
-		$this->response($response);
+		$this->output($response);
 	}
 
-	public function error($message){
+	public function error($message, $code = 400){
 		$response = array(
 			"success" => false,
 			"message" => $message);
-		$this->response($response, 400);
+		$this->output($response, $code);
 	}
 
-	private function response($response, $code = 200){
+	private function output($response, $code = 200){
 		http_response_code($code);
 		echo json_encode($response);
 	}
