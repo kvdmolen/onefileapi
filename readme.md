@@ -51,7 +51,7 @@ Then `GET '/index.php/products/5c030fef1cd75'` results in
 }
 ```
 
-Also, `GET '/index.php/products/invalidid'` results in `HTTP Response code 400`
+Also, `GET '/index.php/products/invalidid'` results in `HTTP Response code 400` and
 
 ```javascript
 {
